@@ -1,6 +1,34 @@
 $(function () {
   let layer = layui.layer;
 
+  // 来获取头像和昵称
+  getAvatarAndName();
+
+  // 退出功能
+  $("#logoutBtn").click(function () {
+    layer.confirm(
+      "确定退出登录?",
+      { icon: 3, title: "提 示" },
+      function (index) {
+        // 该函数会在点击确认的时候执行
+        // 退出登录要做的事情，应该和登录的时候做的事情是相反的
+        // 1. 把存储在本地的token信息给删除掉 ==> localStorage.removeItem(key);
+        // 2. 页面跳转回到login.html 登录页面
+
+        // 1.
+        localStorage.removeItem("token");
+
+        // 2,
+        location.href = "login.html";
+
+        layer.close(index); // 关闭当前询问框
+      }
+    );
+  });
+});
+
+// 全局的函数 ==> 可以通过window获取到
+function getAvatarAndName() {
   // 获取用户头像和昵称基本信息
   $.ajax({
     url: "/my/userinfo",
@@ -52,26 +80,4 @@ $(function () {
       }
     }, */
   });
-
-  // 退出功能
-  $("#logoutBtn").click(function () {
-    layer.confirm(
-      "确定退出登录?",
-      { icon: 3, title: "提 示" },
-      function (index) {
-        // 该函数会在点击确认的时候执行
-        // 退出登录要做的事情，应该和登录的时候做的事情是相反的
-        // 1. 把存储在本地的token信息给删除掉 ==> localStorage.removeItem(key);
-        // 2. 页面跳转回到login.html 登录页面
-
-        // 1.
-        localStorage.removeItem("token");
-
-        // 2,
-        location.href = "login.html";
-
-        layer.close(index); // 关闭当前询问框
-      }
-    );
-  });
-});
+}
